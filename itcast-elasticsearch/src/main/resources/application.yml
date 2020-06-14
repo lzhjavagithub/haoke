@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: itcast-elasticsearch
+  data:
+    elasticsearch:
+      cluster-name: es-itcast-cluster
+      cluster-nodes: 192.168.103.130:9200
