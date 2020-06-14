@@ -9,5 +9,8 @@
         <module name="itcast-elasticsearch" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="itcast-elasticsearch" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
 </project>
