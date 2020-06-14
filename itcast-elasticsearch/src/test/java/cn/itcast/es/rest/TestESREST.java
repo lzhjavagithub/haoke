@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpHost;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.util.EntityUtils;
+import org.elasticsearch.action.delete.DeleteRequest;
 import org.elasticsearch.client.*;
 import org.junit.After;
 import org.junit.Before;
@@ -54,6 +55,7 @@ public class TestESREST {
     public void testSave() throws IOException {
         Request request = new Request("post","/haoke/user");
         request.addParameter("pretty","true");
+
         Map map = new HashMap();
         map.put("id",1002);
         map.put("title","大牛坊社区 整租");
@@ -61,6 +63,27 @@ public class TestESREST {
 
         String jsonValue = mapper.writeValueAsString(map);
         request.setJsonEntity(jsonValue);
+        Response response = this.restClient.performRequest(request);
+        System.out.println("请求完成->"+ response.getRequestLine());
+        System.out.println("请求完成->"+ EntityUtils.toString(response.getEntity()));
+    }
+
+    @Test
+    public void testQueryData() throws IOException {
+        Request request = new Request("get","/haoke/user/462wsnIBsxEBa_1JP_sl");
+        request.addParameter("pretty","true");// 格式化数据
+        Response response = this.restClient.performRequest(request);
+        System.out.println("请求完成->"+ response.getRequestLine());
+        System.out.println("请求完成->"+ EntityUtils.toString(response.getEntity()));
+    }
+
+    @Test
+    public void testSearchData() throws IOException {
+        Request request = new Request("post","/haoke/user/_search");
+        String searchJson = "{\"query\":{\"match\" : {\"title\" : \"大牛坊\"} }}";
+        request.setJsonEntity(searchJson);
+        // 格式化数据
+        request.addParameter("pretty","true");
         Response response = this.restClient.performRequest(request);
         System.out.println("请求完成->"+ response.getRequestLine());
         System.out.println("请求完成->"+ EntityUtils.toString(response.getEntity()));
